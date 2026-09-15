@@ -1,0 +1,16 @@
+model:
+  checkpoint: "depth-anything/Depth-Anything-V2-Metric-Indoor-Large-hf"
+  device: "auto"          # auto | cuda | cpu
+
+inference:
+  input_size: 518
+  max_depth_m: 20.0        # outdoor scenes: try 80.0 with the Outdoor checkpoint
+
+uncertainty:
+  method: "tta"             # tta | mc_dropout
+  n_augmentations: 4
+  max_rotation_deg: 3.0
+
+onnx:
+  opset_version: 17
+  output_path: "outputs/models/depth_anything.onnx"

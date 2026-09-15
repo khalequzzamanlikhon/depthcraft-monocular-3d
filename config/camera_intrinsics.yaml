@@ -1,0 +1,14 @@
+# Example intrinsics -- overwrite with your calibrator.py output for real cameras.
+default:
+  width: 1920
+  height: 1080
+  fov_deg: 60.0
+
+calibrated_example:
+  width: 1920
+  height: 1080
+  fx: 1385.6
+  fy: 1385.6
+  cx: 960.0
+  cy: 540.0
+  dist_coeffs: [0.0, 0.0, 0.0, 0.0, 0.0]

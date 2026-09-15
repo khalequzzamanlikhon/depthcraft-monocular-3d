@@ -1,0 +1,5 @@
+2026-09-15 11:19:03,344 | INFO    | depthcraft.depth.depth_anything_engine | Loaded depth-anything/Depth-Anything-V2-Metric-Indoor-Large-hf on cuda
+Backend under test: transformers
+PyTorch/fallback backend: {'mean_ms': 364.10530351956066, 'p50_ms': 361.80570092983544, 'p95_ms': 381.98180404724553, 'fps': 2.746458209571994}
+
+To compare against ONNX/TensorRT, export first with depthcraft/depth/onnx_exporter.py, then wrap an ONNXRuntime InferenceSession's .run() call in the same benchmark_backend() helper.
