@@ -105,7 +105,6 @@ python demo_outputs/run_scripts/depth_demo.py --images <dir of jpgs> --out demo_
 python demo_outputs/run_scripts/patched_run.py scripts/benchmark_inference.py --image <jpg> --n-runs 30
 ```
 
-`run_all.sh` (same folder) is the full orchestration script, including conda env creation
 and pinned constraints (`torch 2.4.1`, `numpy<2`, `transformers<4.50`).
 
 ---

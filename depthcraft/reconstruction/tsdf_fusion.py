@@ -1,7 +1,7 @@
 """TSDF volumetric fusion via Open3D's ScalableTSDFVolume (Phase 3 step 4).
 
 Fully real implementation -- this is exactly what the spec says: don't
-write TSDF from scratch, use Open3D's battle-tested integrator.
+write TSDF from scratch, use Open3D's well-tested integrator.
 """
 from __future__ import annotations
 

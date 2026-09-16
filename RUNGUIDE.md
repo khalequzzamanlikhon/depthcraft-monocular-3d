@@ -41,14 +41,14 @@ You should now be inside a folder that looks like this:
 
 ```
 depthcraft/
-├── depthcraft/        ← the actual Python package
-├── frontend/          ← React web viewer
-├── tests/             ← automated tests
-├── scripts/           ← helper scripts
-├── docker/            ← Docker files
-├── mvp_demo.py        ← the simplest demo you can run
-├── pyproject.toml     ← package config (where [dev], [depth] etc are defined)
-└── Makefile           ← shortcuts for common commands
+├── depthcraft/ the actual Python package
+├── frontend/ React web viewer
+├── tests/ automated tests
+├── scripts/ helper scripts
+├── docker/ Docker files
+├── mvp_demo.py the simplest demo you can run
+├── pyproject.toml package config (where [dev], [depth] etc are defined)
+└── Makefile shortcuts for common commands
 ```
 
 ---
@@ -169,8 +169,8 @@ uvicorn depthcraft.api.main:app --host 0.0.0.0 --port 8000 --reload
 You should see:
 
 ```
-INFO:     Uvicorn running on http://0.0.0.0:8000
-INFO:     Application startup complete.
+INFO: Uvicorn running on http://0.0.0.0:8000
+INFO: Application startup complete.
 ```
 
 Leave this terminal running. The API is now live.
@@ -250,7 +250,7 @@ make mvp IMAGE=path/to/photo.jpg
 ## Upgrading to the real depth model (optional, needs internet)
 
 The default fallback depth estimator works but gives rougher results. To
-use the actual state-of-the-art Depth Anything V2 model:
+use the actual current Depth Anything V2 model:
 
 ```bash
 pip install -e ".[depth]"
@@ -267,7 +267,7 @@ instead of `backend: fallback`.
 
 ```bash
 python mvp_demo.py --image room.jpg --headless
-# INFO | Depth engine backend: transformers   ← real model
+# INFO | Depth engine backend: transformers    real model
 ```
 
 You do NOT need a GPU for this. It will just be slower on CPU (~30 sec per
@@ -348,12 +348,12 @@ Everything the app produces goes into the `outputs/` folder:
 
 ```
 outputs/
-└── abc123def456/          ← each job gets a unique ID
-    ├── depth_vis.png      ← colorized depth map (viewable in any image viewer)
-    ├── depth.npy          ← raw depth data (numpy array, meters)
-    ├── pointcloud.ply     ← 3D point cloud (open with MeshLab, CloudCompare, or Open3D)
-    ├── mesh.glb           ← 3D mesh for web viewing
-    └── uncertainty_vis.png ← depth uncertainty map (if requested)
+└── abc123def456/ each job gets a unique ID
+    ├── depth_vis.png colorized depth map (viewable in any image viewer)
+    ├── depth.npy raw depth data (numpy array, meters)
+    ├── pointcloud.ply      3D point cloud (open with MeshLab, CloudCompare, or Open3D)
+    ├── mesh.glb            3D mesh for web viewing
+    └── uncertainty_vis.png depth uncertainty map (if requested)
 ```
 
 `.ply` files can be opened with:
@@ -434,19 +434,19 @@ SETUP (once):
   python3 -m venv .venv
   source .venv/bin/activate
   pip install -e ".[dev]"
-  pytest tests/ -v              ← should say 22 passed
+  pytest tests/ -v should say 22 passed
 
 EVERY DAY:
-  source .venv/bin/activate     ← always do this first
+  source .venv/bin/activate always do this first
 
 RUN DEMO:
   python mvp_demo.py --image photo.jpg --headless
 
 RUN APP:
-  uvicorn depthcraft.api.main:app --port 8000 --reload   (terminal 1)
-  python -m depthcraft.visualization.gradio_app           (terminal 2)
+  uvicorn depthcraft.api.main:app --port 8000 --reload (terminal 1)
+  python -m depthcraft.visualization.gradio_app (terminal 2)
   → open http://localhost:7860
 
 UPGRADE DEPTH QUALITY:
-  pip install -e ".[depth]"     ← downloads ~3 GB, then runs better
+  pip install -e ".[depth]" downloads ~3 GB, then runs better
 ```

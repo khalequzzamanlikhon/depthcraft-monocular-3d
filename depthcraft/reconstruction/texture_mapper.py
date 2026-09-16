@@ -2,7 +2,7 @@
 
 Open3D doesn't ship a full multi-view texture-atlas baker out of the box, so
 this implements the core algorithm (best-view selection + per-vertex color
-projection) directly; for production-grade UV unwrapping + atlas packing,
+projection) directly; for production UV unwrapping + atlas packing,
 swap in a dedicated tool like `xatlas` (pip-installable, used below when
 present) with a fallback to simple vertex-color texturing.
 """
