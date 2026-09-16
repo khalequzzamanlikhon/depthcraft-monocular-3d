@@ -2,15 +2,15 @@
 FROM python:3.11-slim AS base
 
 RUN apt-get update && apt-get install -y \
-    libgl1-mesa-glx libglib2.0-0 libsm6 libxext6 libxrender-dev git \
+    libgl1 libglx-mesa0 libglib2.0-0 libsm6 libxext6 libxrender-dev git \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-COPY pyproject.toml .
-RUN pip install --no-cache-dir -e ".[api,dev]"
-
+COPY pyproject.toml README.md LICENSE ./
 COPY depthcraft/ ./depthcraft/
+RUN pip install --no-cache-dir -e ".[dev]"
+
 COPY config/ ./config/
 COPY mvp_demo.py .
 COPY scripts/ ./scripts/

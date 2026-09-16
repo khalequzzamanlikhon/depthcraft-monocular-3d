@@ -3,16 +3,16 @@ FROM nvidia/cuda:12.1.0-devel-ubuntu22.04 AS base
 
 RUN apt-get update && apt-get install -y \
     python3.11 python3-pip python3.11-venv \
-    libgl1-mesa-glx libglib2.0-0 libsm6 libxext6 libxrender-dev \
+    libgl1 libglx-mesa0 libglib2.0-0 libsm6 libxext6 libxrender-dev \
     git wget colmap \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
-COPY pyproject.toml .
-RUN pip install --no-cache-dir -e ".[api,dev]"
-
+COPY pyproject.toml README.md LICENSE ./
 COPY depthcraft/ ./depthcraft/
+RUN pip install --no-cache-dir -e ".[dev]"
+
 COPY config/ ./config/
 COPY mvp_demo.py .
 COPY scripts/ ./scripts/
