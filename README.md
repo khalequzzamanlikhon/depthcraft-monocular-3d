@@ -1,6 +1,6 @@
 # DepthCraft
 
-[![CI](https://github.com/khalequzzamanlikhon/depthcraft/actions/workflows/ci.yml/badge.svg)](https://github.com/khalequzzamanlikhon/depthcraft/actions/workflows/ci.yml)
+[![CI](https://github.com/khalequzzamanlikhon/depthcraft-monocular-3d/actions/workflows/ci.yml/badge.svg)](https://github.com/khalequzzamanlikhon/depthcraft-monocular-3d/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](pyproject.toml)
 
@@ -15,9 +15,8 @@ TSDF + Poisson) and 3D Gaussian Splatting paths are implemented as optional extr
 
 ## Verified run (2026-09-15)
 
-Everything below was run end-to-end on a Linux GPU server and every stage finished
-successfully. All raw outputs are kept in [`demo_outputs/`](demo_outputs/) (see
-[What's in `demo_outputs/`](#whats-in-demo_outputs)).
+I ran everything below end-to-end on a Linux GPU server, and every stage finished
+successfully. All raw outputs are kept in [`demo_outputs/`](demo_outputs/).
 
 **Environment:** Python 3.11 (conda), `torch 2.4.1+cu121`, `transformers 4.49.0`,
 `open3d 0.19.0`, NVIDIA RTX A5000 (driver 570). Install: `pip install -e ".[dev,depth]"`.
@@ -54,7 +53,7 @@ Sample images are the Depth Anything V2 repo's `assets/examples/demo0{1..6}.jpg`
 
 ### What the numbers do and don't show
 
-- **No ground truth was used.** The "headless measurement" is a smoke test: it measures
+- **I didn't use ground truth.** The "headless measurement" is a smoke test: it measures
   the two most distant points in the cleaned cloud and propagates depth uncertainty
   into a ±σ / 95 % CI. It proves the measurement path works; it is not an accuracy figure.
 - **Indoor metric model on outdoor scenes.** demo01/02/06 are street scenes, outside the
@@ -66,11 +65,11 @@ Sample images are the Depth Anything V2 repo's `assets/examples/demo0{1..6}.jpg`
   but it's too sparse for dense meshing without tuning the outlier-removal radius.
 - **Model-load timeout.** `DepthAnythingEngine` gives up after 20 s
   (`MODEL_LOAD_TIMEOUT_S`) and falls back to the classical estimator. A cold load of the
-  1.3 GB checkpoint can exceed that, so the run raised it to 600 s through a wrapper
+  1.3 GB checkpoint can exceed that, so I raised it to 600 s through a wrapper
   (`demo_outputs/run_scripts/patched_run.py`) without editing the repo. On slow disks or
   networks, raise the constant or check `engine.backend` before trusting results.
-- Not exercised in this run: COLMAP SfM/MVS, TSDF fusion on real sequences, SAM 2
-  masking, 3DGS training, ONNX/TensorRT export, Gradio and React frontends.
+- I didn't exercise COLMAP SfM/MVS, TSDF fusion on real sequences, SAM 2 masking,
+  3DGS training, ONNX/TensorRT export, or the Gradio/React frontends in this run.
 
 ---
 
@@ -154,50 +153,6 @@ python scripts/export_splat.py --input outputs/room/splat/point_cloud.ply --outp
 ```
 
 ---
-
-## What's in `demo_outputs/`
-
-```
-demo_outputs/
-├── summary.json                  # per-image stats + benchmark (source of the tables above)
-├── benchmark_inference.txt       # scripts/benchmark_inference.py output
-├── demo01 … demo06/
-│   ├── depth.npy                 # float32 metric depth (m), image resolution
-│   ├── depth_vis.png             # colourised depth
-│   ├── uncertainty_vis.png       # TTA uncertainty
-│   ├── panel_rgb_depth_uncertainty.jpg
-│   ├── pointcloud.ply            # cleaned metric point cloud (git-ignored: *.ply)
-│   └── pointcloud_preview.png
-├── mvp_demo_repo/                # output of the unmodified mvp_demo.py
-├── api/                          # health/depth/reconstruct JSON responses, returned PNGs, uvicorn log
-├── logs/                         # full stdout/stderr of every stage (setup, tests, demo, bench, api)
-├── run_scripts/                  # run_all.sh, constraints.txt, depth_demo.py, patched_run.py
-└── STATUS.tsv                    # stage, result, duration (includes a first attempt that failed before setup finished)
-```
-
----
-
-## Project layout
-
-```
-depthcraft/
-├── api/              # FastAPI app + routers (depth, reconstruct, measure, export)
-├── depth/            # Depth Anything V2 / Metric3D, scale alignment, uncertainty, ONNX export
-├── masking/          # SAM 2 / YOLOv8-seg dynamic object masking
-├── sfm/              # feature extraction, matching, COLMAP + ORB-SLAM3 wrappers
-├── mvs/              # PatchMatch MVS wrapper, confidence-aware fusion
-├── reconstruction/   # point cloud cleaning, TSDF fusion, Poisson meshing, texturing, 3DGS
-├── measurement/      # AprilTag calibration, ray casting, uncertainty-aware measurement
-├── visualization/    # Open3D viewer, web export, Gradio app
-├── room/             # floor/wall planes, floor plans, object measurement
-└── utils/            # geometry, IO, logging
-frontend/             # React + Three.js + Vite viewer
-scripts/              # benchmark, export, training, dense_recon
-tests/                # pytest suite (22 tests)
-docker/  config/  docs/
-mvp_demo.py           # single-image demo
-Makefile              # make install / test / lint / api / gradio / mvp IMAGE=… / docker-up
-```
 
 ## Troubleshooting
 
